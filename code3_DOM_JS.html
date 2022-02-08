@@ -6,14 +6,56 @@
         <h1>DOM - Document Object Manipulation</h1>
         <div>
             <h2>Text in HTML</h2>
-            <div id="mainDiv">Text in html</div>
+            <div id="mainDiv">Text (Element) in html</div>
             <script>
                 //Selecting an element from the document  - the text
                 AnElement=document.getElementById("mainDiv");
-                console,console.log("lala", second);
+                console.log("lala", AnElement);
                 //Creating a paragraph element
                 var AParagraph=document.createElement("p");
-                
+                AParagraph.appendChild(document.createTextNode("Text that I want to append, in new line"));
+                AnElement.appendChild(AParagraph);
+            </script>
+        </div>
+        <div>
+            <h2>Dynamical text and loops</h2>
+            <div id="secondDiv">Dynamical text and loops</div>
+            <script>
+                //Function to divide text in div, if we change div by p each line would be a paragraph
+                function divWithText(text){
+                    var result=document.createElement("div");
+                    var Node=document.createTextNode(text);
+                    result.appendChild(Node);
+                    return result;
+                }
+                for (i=0; i<10; i++){
+                    secondDiv.appendChild(divWithText(i*i));
+                }
+                x=divWithText("The End")
+                secondDiv.appendChild(x)
+            </script>
+        </div>
+        <div>
+            <h2>Text style</h2>
+            <div id="thirdDiv"></div>
+            <script>
+                //Function to assign position
+                function Position(text, x, y){
+                    var node=divWithText(text);
+                    node.setAttribute("style", "position:absolute; left:" + x + "px;top: "+y+"px;color:rgb("+text%255+","+10+",250)");
+                    return node;
+                }
+                //Function to convert degrees to radians 
+                function radians(v){
+                    return v*(Math.PI/180);
+                }
+                //Computing position
+                for(i=0; i<360; i+=30){
+                    thirdDiv.appendChild(Position(
+                        String(i), 
+                        150 + 100*Math.cos(radians(i)),
+                        600 + 100*Math.sin(radians(i))));
+                }
             </script>
         </div>
     </body>
