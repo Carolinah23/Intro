@@ -1,0 +1,64 @@
+<html>
+    <head>
+        <title>Events</title>
+    </head>
+    <body>
+        <h2>This creates buttons</h2>
+        <div>
+            <!--Code to create buttons-->
+            <!--Using a function to give functionality-->
+            <button onclick="messageMe()">Yooo</button>
+            <!--Using button id-->
+            <button id="Button2">No, yoo</button>
+            <!--Script that creates alerts, reactions of the buttons-->
+            <script>
+                //Creating function messageMe without parameters
+                var messageMe=function(){
+                    alert("Yes, you pick me!");
+                }
+                //Using second button id to add the function to be connected dynamically
+                document.getElementById("Button2").onclick=function(event){
+                    alert("It's me anyway :p");
+                }
+            </script>
+        </div>
+        <div>
+            <h2>This creates drop-down box</h2>
+            <div>I want a <span id="pet"></span></div>
+            <!--Elements-->
+            <select id="dropDown">
+                <option value="Cat">Cat</option>
+                <option value="Dog">Dog</option>
+                <option value="Duck">Duck</option>
+            </select>
+            <script>
+                //We initialize things here, in this case the favorite pet
+                document.getElementById("pet").innerHTML=document.getElementById("dropDown").value;
+                //Identify the button and add the function to be connected dynamically
+                document.getElementById("dropDown").onchange=function(even){
+                    document.getElementById("pet").innerHTML=even.srcElement.value;
+                }
+            </script>
+        </div>
+        <div>
+            <h2>This creates an animation using a svg</h2>
+            <svg width="400" height="200" style="stroke: gray; stroke-width: 1px">
+                <circle id="circulito" cx="200" cy="100" r="10" style="fill:cadetblue">
+                </circle>
+            </svg>
+            <script>
+                var colors=["DarkOrchid", "Teal", "Tomato", "SteelBlue", "black"];
+                var colorCount=0;
+                //Here I am doing the circle'radius to increase 15px per click
+                document.getElementById("circulito").onclick=function(event){
+                    var circle=event.srcElement;
+                    var currentRadius=parseFloat(circle.getAttribute("r"));
+                    circle.setAttribute("r", (currentRadius+15).toString());
+                    circle.setAttribute("style", "fill: " + colors[colorCount%5]);
+                    colorCount++;
+                }
+            </script>
+        </div>
+
+    </body>
+</html>
