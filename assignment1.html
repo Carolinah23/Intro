@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Assignment 1</title>
+</head>
+<body>
+
+<h3>CMPS-3360 Assignment 1</h3>
+<span>Your Name</span>
+
+<br/>
+<hr/>
+<br/>
+
+<br/>
+
+<script> 
+	var data = [10,8,13,9,11,14,6,4,12,7,5];
+</script>
+
+
+
+<div>	 
+    <h2>1a. Bar Chart</h2>
+    <svg id="Bar" width="300" height="200"></svg>
+	 
+	 <!-- Here is how you'd set a background rectangle programmatically with javascript.  Useful but not necessary for this assignment -->
+	 <script>
+		 var svg = document.getElementById("Bar");
+		 var newElement = document.createElementNS("http://www.w3.org/2000/svg", 'rect'); //Create a path in SVG's namespace
+		 newElement.setAttribute("x","0");
+		 newElement.setAttribute("y","0"); 
+		 newElement.setAttribute("width","300");
+		 newElement.setAttribute("height","200"); 
+		 newElement.style.fill = "white"; //Set stroke colour
+		 newElement.style.stroke = "#000000"; //Set stroke colour
+		 newElement.style.strokeWidth = "1px"; //Set stroke width
+		 svg.appendChild(newElement);
+	 </script>
+		 
+</div>
+
+<div>
+    <h2>1b. Line Chart</h2>
+
+    <svg id="Line" width="300" height="200"></svg>
+</div>
+
+<div>
+	<script src="scores.js" charset="utf-8"></script>    
+	 
+	 <h2>2a. Scatterplot</h2>
+
+    <svg id="Scatter" width="300" height="200"></svg>
+</div>
+
+<div>
+    <h2>2b. Color Justification</h2>
+
+
+    <h2>2c. Visualization Critique</h2>
+</div>
+</body>
+</html>
