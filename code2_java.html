@@ -121,6 +121,34 @@
     </script>
     <!--Functions-->
     <script>
+        //Writing a function
+
+        function aFunction(v){
+            if(v<10){
+                return v;
+            } else{
+                return v*v;
+            }
+        }
         
+        //Using the function
+        console.log("Using for v=5", aFunction(5));
+        console.log("Using for v=30", aFunction(30));
+        //Javascript let's do stupid things(?)
+        console.log("with a string", aFunction("Pepa"));
+        console.log("With more parameters", aFunction(2,6));
+        console.log("Moreee stuff", aFunction(2, "ja"));
+        console.log("W/o a thing", aFunction());
+
+        //Another way of using functions
+        var variableFunction=function(v){
+            if (v>10){
+                return "big";
+            } else{
+                return "small";
+            }
+        }
+        console.log("The number is", variableFunction(233));
+
     </script>
 </html>
