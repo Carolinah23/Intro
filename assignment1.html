@@ -17,28 +17,25 @@
 
 <script> 
 	var data = [10,8,13,9,11,14,6,4,12,7,5];
+
 </script>
-
-
-
 <div>	 
-    <h2>1a. Bar Chart</h2>
-    <svg id="Bar" width="300" height="200"></svg>
-	 
-	 <!-- Here is how you'd set a background rectangle programmatically with javascript.  Useful but not necessary for this assignment -->
-	 <script>
-		 var svg = document.getElementById("Bar");
-		 var newElement = document.createElementNS("http://www.w3.org/2000/svg", 'rect'); //Create a path in SVG's namespace
-		 newElement.setAttribute("x","0");
-		 newElement.setAttribute("y","0"); 
-		 newElement.setAttribute("width","300");
-		 newElement.setAttribute("height","200"); 
-		 newElement.style.fill = "white"; //Set stroke colour
-		 newElement.style.stroke = "#000000"; //Set stroke colour
-		 newElement.style.strokeWidth = "1px"; //Set stroke width
-		 svg.appendChild(newElement);
-	 </script>
-		 
+    <h2>1a. Bar Chart</h2>	
+	<svg width="500" height="300">
+		<text x="30" y="10">20</text>
+		<text x="30" y="72">15</text>
+		<text x="30" y="135">10</text>
+		<text x="35" y="197">5</text>
+		<text x="35" y="260">0</text>
+		<rect id="frame" x="50" y="10" width="400" height="250"
+		style="fill:white; stroke:black; stroke-width:1 px"/>	
+		<rect id="bar" x="100" y="160" width="20" height="100"></rect>
+		<rect id="bar" x="135" y="97.5" width="20" height="162.5"></rect>
+	</svg>
+	<script>
+		
+	</script>
+
 </div>
 
 <div>
