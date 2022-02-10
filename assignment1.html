@@ -85,7 +85,32 @@
 	 
 	 <h2>2a. Scatterplot</h2>
 
-    <svg id="Scatter" width="300" height="200"></svg>
+    <svg id="Scatter" width="1000" height="1000">
+		<rect id="frame" x="50" y="50" width="900" height="900"
+		style="fill:white; stroke:black; stroke-width:1 px"/>	
+	</svg>
+	<script>
+			var SATM1=scores.map(({SATM})=>SATM);
+			var SATV1=scores.map(({SATV})=>SATV);
+			var ACT1=scores.map(({ACT})=>ACT);
+			var GPA1=scores.map(({GPA})=>GPA);
+			//console.log(Math.min.apply(Math, SATM1));
+			//console.log(Math.min.apply(Math, SATV1));
+			//console.log(Math.min.apply(Math, ACT1));
+
+			for(i=0; i<ACT1.length;i++){
+				xc=SATM1[i]+50; //To compensate translation
+				console.log(typeof(SATM1[i]));
+				yc=1000-SATV1[i]+50; //To flip y coordinates
+				rc=ACT1[i]/3; //Scaled to better visualization 1 unit in graph 3 units in data
+				mainSVG2=document.getElementById("Scatter");
+				var point1=document.createElementNS(svgns, "circle");
+				point1.setAttribute("cx", xc.toString());
+				point1.setAttribute("cy", yc.toString());
+				point1.setAttribute("r", rc.toString());
+				mainSVG2.appendChild(point1);
+			}
+	</script>
 </div>
 
 <div>
