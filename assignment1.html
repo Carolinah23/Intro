@@ -6,8 +6,8 @@
 </head>
 <body>
 
-<h3>CMPS-3360 Assignment 1</h3>
-<span>Carolina Hurtado Pulido</span>
+<h1>CMPS-3360 Assignment 1</h1>
+<span style="font-size:150%;">Carolina Hurtado Pulido</span>
 
 <br/>
 <hr/>
@@ -88,36 +88,84 @@
     <svg id="Scatter" width="1000" height="1000">
 		<rect id="frame" x="50" y="50" width="900" height="900"
 		style="fill:white; stroke:black; stroke-width:1 px"/>	
+		<text x="500" y="990">SATM</text>
+		<text x="30" y="35">SATV</text>
+		<text x="70" y="70">ACT - Point size (Values divided by 2.5)</text>
+		<text x="70" y="85">GPA - Point color (ligh are large values, dark are small values) </text>
 	</svg>
 	<script>
 			var SATM1=scores.map(({SATM})=>SATM);
 			var SATV1=scores.map(({SATV})=>SATV);
 			var ACT1=scores.map(({ACT})=>ACT);
 			var GPA1=scores.map(({GPA})=>GPA);
-			//console.log(Math.min.apply(Math, SATM1));
-			//console.log(Math.min.apply(Math, SATV1));
-			//console.log(Math.min.apply(Math, ACT1));
-
+			console.log(Math.min.apply(Math, SATM1));
+			console.log(Math.max.apply(Math, SATM1));
+			console.log(Math.min.apply(Math, SATV1));
+			console.log(Math.max.apply(Math, SATV1));
+			console.log(Math.min.apply(Math, ACT1));
+			console.log(Math.max.apply(Math, ACT1));
+			console.log(Math.min.apply(Math, GPA1));
+			console.log(Math.max.apply(Math, GPA1));
+			
 			for(i=0; i<ACT1.length;i++){
-				xc=SATM1[i]+50; //To compensate translation
-				console.log(typeof(SATM1[i]));
+				xc=SATM1[i]; //To compensate translation
 				yc=1000-SATV1[i]+50; //To flip y coordinates
-				rc=ACT1[i]/3; //Scaled to better visualization 1 unit in graph 3 units in data
+				rc=ACT1[i]/2.5; //Scaled to better visualization 1 unit in graph 3 units in data
+				red=10*(GPA1[i]-1);
+				green=60*(GPA1[i]-1);
+				blue=70*(GPA1[i]-1);
 				mainSVG2=document.getElementById("Scatter");
 				var point1=document.createElementNS(svgns, "circle");
 				point1.setAttribute("cx", xc.toString());
 				point1.setAttribute("cy", yc.toString());
 				point1.setAttribute("r", rc.toString());
+				point1.setAttribute("style", "fill:rgb(" +red.toString()+ "," +green.toString()+ ","+blue.toString()+ ")");
+				point1.setAttribute("stroke", "#bcbcbc");
 				mainSVG2.appendChild(point1);
+			}
+			for (i=0; i<10;i++){
+				var cordX=20;
+				var Y1=1000;
+				var coordY=Y1-(i*100);
+				var AxisY=document.createElementNS(svgns, "text");
+				AxisY.setAttribute("x", cordX.toString());
+				AxisY.setAttribute("y", (i*100).toString());
+				AxisY.textContent=coordY.toString();
+				mainSVG2.appendChild(AxisY);
+			}
+			for (i=0; i<10;i++){
+				var X1=950;
+				var cordY=970;
+				var coordX=X1-(i*100);
+				var AxisX=document.createElementNS(svgns, "text");
+				AxisX.setAttribute("y", cordY.toString());
+				AxisX.setAttribute("x", coordX.toString());
+				AxisX.textContent=coordX.toString();
+				mainSVG2.appendChild(AxisX);
 			}
 	</script>
 </div>
 
 <div>
     <h2>2b. Color Justification</h2>
-
+	<p  style="font-size:150%;">I decided to use a scale of blue-green to graph the scatter plot, 
+		in this case, darker colors show low values of GPA and lighter colors larger GPA values. 
+		As the GPA is a quantitative variable, a color scale allows one to compare and have an idea 
+		of how the values vary. To have the blues that I got I created the RGB values using the GPA 
+		directly, I gave less importance to the red channel, while the blue and green channels were 
+		multiplied by larger numbers. Also, I used a fine grey stroke line to be able to differentiate 
+		each circle better, which I think is particularly useful on the area with a great amount of 
+		light blue circles (right-upper corner).  </p>
 
     <h2>2c. Visualization Critique</h2>
+	<p  style="font-size:150%;"> First, my graph does not have a clear legend, I thought of doing it, 
+		but I would need to do one for size and another one for color, which can saturate the figure. 
+		I have seen that this can be solved with a good caption - at least in geosciences papers. 
+		Secondly, the size of the circles is scaled to see all or almost all the circles, but the 
+		values are close to each other, I think it would be better to modify (normalize) the data. 
+		Finally, I created the RGB values linearly (multiplications and sums), but I have seen in 
+		color websites and GIS software that they divide the values in ranges, this may be more 
+		accurate.</p>
 </div>
 </body>
 </html>
