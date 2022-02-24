@@ -63,9 +63,10 @@
 			//var SATV1=scores.map(({SATV})=>SATV);
 			//var ACT1=scores.map(({ACT})=>ACT);
 			//var GPA1=scores.map(({GPA})=>GPA);
-            console.log(scores[1].GPA)
-
-            //var colorLinear=d3.scaleLinear().domain([d3.min(scores.GPA),0,d3.max(scores.GPA)]).range(["darkred", "lightgray", "steelblue"])
+            console.log(d3.min(scores, d =>d.GPA))
+            console.log(d3.max(scores, d =>d.GPA))
+            //https://observablehq.com/@d3/d3-extent 
+            var colorLinear=d3.scaleLinear().domain([d3.min(scores, d =>d.GPA), 0, d3.max(scores, d => d.GPA)]).range(["darkred", "lightgray", "steelblue"])
 
             var scatter=d3.select("#scatter2a");
             scatter.selectAll("circle")
@@ -80,6 +81,9 @@
                     })
                     .attr("r", function(d, i){
                         return scores[i].ACT/2.5;
+                    })
+                    .style("fill", function(d){
+                        return colorLinear(d);
                     })
         </script>
 
