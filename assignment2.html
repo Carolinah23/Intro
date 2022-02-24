@@ -59,21 +59,27 @@
             <text x="70" y="85">GPA - Point color (Green are large values, Red are small values) </text>
         </svg>
         <script>
-            var SATM1=scores.map(({SATM})=>SATM);
-			var SATV1=scores.map(({SATV})=>SATV);
-			var ACT1=scores.map(({ACT})=>ACT);
-			var GPA1=scores.map(({GPA})=>GPA);
+            //var SATM1=scores.map(({SATM})=>SATM);
+			//var SATV1=scores.map(({SATV})=>SATV);
+			//var ACT1=scores.map(({ACT})=>ACT);
+			//var GPA1=scores.map(({GPA})=>GPA);
+            console.log(scores[1].GPA)
 
-            var scatter=d3.select("#scatter2a")
-            scatter.append("circle")
+            //var colorLinear=d3.scaleLinear().domain([d3.min(scores.GPA),0,d3.max(scores.GPA)]).range(["darkred", "lightgray", "steelblue"])
+
+            var scatter=d3.select("#scatter2a");
+            scatter.selectAll("circle")
+                    .data(scores)
+                    .enter()
+                    .append("circle")
                     .attr("cx", function(d, i){
-                        return SATM1[i];
+                        return scores[i].SATM;
                     })
                     .attr("cy", function(d, i){
-                        return 1000-SATV1[i]+50;
+                        return 1000-(scores[i].SATV)+50;
                     })
                     .attr("r", function(d, i){
-                        return ACT1[i]/2.5;
+                        return scores[i].ACT/2.5;
                     })
         </script>
 
