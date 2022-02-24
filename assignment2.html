@@ -7,7 +7,7 @@
 <body>
 
 <h3>CMPS-3360 Assignment 2</h3>
-<span>Alan Braeley, Carolina Hurtado - Pulido</span>
+<span>Alan Braeley & Carolina Hurtado-Pulido</span>
 
 <br/>
 <hr/>
@@ -15,21 +15,41 @@
 
 <br/>
 
-<script src="scores.js" charset="utf-8"></script>    
+<script src="scores.js" charset="utf-8"></script>
+<script src="https://d3js.org/d3.v4.js"></script> 
 
 <!-- Rectangles hard-coded below are placeholders.  Remove. -->
 
 <div id="D3Scatter1">	 
     <h2>1. Reproduce Scatter Plot in D3</h2>
-    <svg id="D3ScatterSVG" width="300" height="200">
-      <rect x="0" y="0" width="300" height="200" style="fill:white; stroke:black; stroke-width:1px"/>
+    <svg id="D3ScatterSVG" width="800" height="400" viewbox="0 0 1000 1000">
     </svg>
+    <script>
+        var svg = d3.select("svg")
+        svg.append("rect").attr("x", "50").attr("y", "10").attr("width", "850").attr("height", "850").attr("fill", "white").attr("stroke", "black").attr("stroke-width", "1 px");
+        svg.append("text").attr("x", "-40").attr("y", "450").attr("font-size", "2em").text("SATV");
+        svg.append("text").attr("x", "450").attr("y", "900").attr("font-size", "2em").text("SATM");
+
+        for(i=0; i< scores.length; i++) {
+          if (scores[i].GPA >= 3.0) {
+            var col ='green'
+          }
+          else if (scores[i].GPA < 3.0 && scores[i].GPA >= 2.0) {
+            var col ='yellow'
+          }
+          else {
+            var col ='red'
+          }
+          svg.append("circle").attr("cx", scores[i].SATM).attr("cy", scores[i].SATV).attr("r", scores[i].ACT).style("fill", col).style("stroke", "black");
+
+        }
+
+</script>
 		 
 </div>
 
 <div id="D3Scatter2">
     <h2>2-4. Color</h2>
-    <script src="https://d3js.org/d3.v4.js"></script>
     <div>
         <h3>2a - Continuously interpolated (linear) color for the GPA values</h3>
         <svg id="scatter2a" width="1000" height="1000">
