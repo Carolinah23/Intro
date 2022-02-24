@@ -7,7 +7,7 @@
 <body>
 
 <h3>CMPS-3360 Assignment 2</h3>
-<span>Your Name</span>
+<span>Alan Braeley, Carolina Hurtado - Pulido</span>
 
 <br/>
 <hr/>
@@ -29,9 +29,39 @@
 
 <div id="D3Scatter2">
     <h2>2-4. Color</h2>
-    <svg id="2a" width="300" height="200">
-       <rect x="0" y="0" width="300" height="200" style="fill:white; stroke:black; stroke-width:1px"/>
-    </svg>
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <div>
+        <h3>2a - Continuously interpolated (linear) color for the GPA values</h3>
+        <svg id="scatter2a" width="1000" height="1000">
+            <rect x="50" y="50" width="900" height="900" style="fill:white; stroke:black; stroke-width:1px"/>
+            <text x="500" y="990">SATM</text>
+            <text x="30" y="35">SATV</text>
+            <text x="70" y="85">GPA - Point color (Green are large values, Red are small values) </text>
+        </svg>
+        <script>
+            var SATM1=scores.map(({SATM})=>SATM);
+			var SATV1=scores.map(({SATV})=>SATV);
+			var ACT1=scores.map(({ACT})=>ACT);
+			var GPA1=scores.map(({GPA})=>GPA);
+
+            var scatter=d3.select("#scatter2a")
+            scatter.append("circle")
+                    .attr("cx", function(d, i){
+                        return SATM1[i];
+                    })
+                    .attr("cy", function(d, i){
+                        return 1000-SATV1[i]+50;
+                    })
+                    .attr("r", function(d, i){
+                        return ACT1[i]/2.5;
+                    })
+        </script>
+
+
+    </div>
+    
+
+
     <svg id="2b" width="300" height="200">
        <rect x="0" y="0" width="300" height="200" style="fill:white; stroke:black; stroke-width:1px"/>
     </svg>
