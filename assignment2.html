@@ -59,32 +59,28 @@
             <text x="70" y="85">GPA - Point color (Green are large values, Red are small values) </text>
         </svg>
         <script>
-            //var SATM1=scores.map(({SATM})=>SATM);
-			//var SATV1=scores.map(({SATV})=>SATV);
-			//var ACT1=scores.map(({ACT})=>ACT);
-			//var GPA1=scores.map(({GPA})=>GPA);
-            console.log(d3.min(scores, d =>d.GPA))
-            console.log(d3.max(scores, d =>d.GPA))
-            //https://observablehq.com/@d3/d3-extent 
-            var colorLinear=d3.scaleLinear().domain([d3.min(scores, d =>d.GPA), 0, d3.max(scores, d => d.GPA)]).range(["darkred", "lightgray", "steelblue"])
+                
+            var minGPA=d3.min(scores, d =>d.GPA);
+            var maxGPA=d3.max(scores, d =>d.GPA);
 
+            var colorLinear=d3.scaleLinear().domain([minGPA, maxGPA]).range(["red", "green"]);
+            
             var scatter=d3.select("#scatter2a");
             scatter.selectAll("circle")
                     .data(scores)
                     .enter()
                     .append("circle")
-                    .attr("cx", function(d, i){
-                        return scores[i].SATM;
-                    })
-                    .attr("cy", function(d, i){
-                        return 1000-(scores[i].SATV)+50;
-                    })
-                    .attr("r", function(d, i){
-                        return scores[i].ACT/2.5;
-                    })
-                    .style("fill", function(d){
-                        return colorLinear(d);
-                    })
+                    .attr("cx", function(d, i){return scores[i].SATM;})
+                    .attr("cy", function(d, i){return 1000-(scores[i].SATV)+50;})
+                    .attr("r", function(d, i){return scores[i].ACT/2.5;})
+                    .style("fill", function(d){return colorLinear(d.GPA)}) // I was doing this line like for 3 hours!!!
+                    .style("stroke", "#bcbcbc");
+
+            scatter.selectAll("text")
+                    .enter()
+                    .append("text")
+                    .attr("x", 500)
+                    .attr("y", 500)
         </script>
 
 
