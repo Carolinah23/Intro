@@ -19,18 +19,25 @@
 <script src="scores.js" charset="utf-8"></script>
 <script src="https://d3js.org/d3.v4.js"></script>
 
-<!-- Rectangles hard-coded below are placeholders.  Remove. -->
-
 <div id="D3Scatter1">
     <h2>1. Reproduce Scatter Plot in D3</h2>
     <svg id="D3ScatterSVG" width="1000" height="1000" viewbox="0 0 1000 1000">
+      <text x="500" y="990">SATM</text>
+      <text x="30" y="35">SATV</text>
     </svg>
-    <script>
-        var svg = d3.select("svg")
-        svg.append("rect").attr("x", "50").attr("y", "10").attr("width", "850").attr("height", "850").attr("fill", "white").attr("stroke", "black").attr("stroke-width", "1 px");
-        svg.append("text").attr("x", "0").attr("y", "450").attr("font-size", "1em").text("SATV");
-        svg.append("text").attr("x", "450").attr("y", "900").attr("font-size", "1em").text("SATM");
 
+    <script>
+        var svg = d3.select("#D3ScatterSVG")
+        D3ScatterSVG.append("rect")
+           .attr("x", "50")
+           .attr("y", "10")
+           .attr("width", "850")
+           .attr("height", "850")
+           .attr("fill", "white")
+           .attr("stroke", "black")
+           .attr("stroke-width", "1 px");
+
+        // Scatter circles
         for(i=0; i< scores.length; i++) {
           if (scores[i].GPA >= 3.0) {
             var col ='green'
@@ -41,12 +48,15 @@
           else {
             var col ='red'
           }
-          svg.append("circle").attr("cx", scores[i].SATM).attr("cy", scores[i].SATV).attr("r", scores[i].ACT/2.5).attr("transform", "translate(0,1000), scale(1,-1)").style("fill", col).style("stroke", "black");
-
+          D3ScatterSVG.append("circle")
+              .attr("cx", scores[i].SATM)
+              .attr("cy", scores[i].SATV)
+              .attr("r", scores[i].ACT/2.5)
+              .attr("transform", "translate(0,1000), scale(1,-1)")
+              .style("fill", col)
+              .style("stroke", "black");
         }
-
 </script>
-
 </div>
 
 <div id="D3Scatter2">
@@ -192,57 +202,86 @@
     <svg height="1000" width="1000" viewbox="0 0 1000 1000" id="svg3">
     </svg>
     <script>
-    var svg3 = d3.select("#svg3")
+          var svg3 = d3.select("#scatter3")
 
-    svg3.append("rect").attr("x", "50").attr("y", "10").attr("width", "900").attr("height", "900").attr("fill", "white").attr("stroke", "black").attr("stroke-width", "1 px");
-    svg3.append("text").attr("x", "0").attr("y", "435").attr("font-size", "1em").text("SATV");
-    svg3.append("text").attr("x", "450").attr("y", "950").attr("font-size", "1em").text("SATM");
+          scatter3.append("rect")
+              .attr("x", "50")
+              .attr("y", "10")
+              .attr("width", "900")
+              .attr("height", "900")
+              .attr("fill", "white")
+              .attr("stroke", "black")
+              .attr("stroke-width", "1 px");
+          scatter3.append("text")
+              .attr("x", "0")
+              .attr("y", "435")
+              .attr("font-size", "1em")
+              .text("SATV");
+          scatter3.append("text")
+              .attr("x", "450")
+              .attr("y", "950")
+              .attr("font-size", "1em")
+              .text("SATM");
 
-    for(i=0; i< scores.length; i++) {
-      if (scores[i].GPA >= 3.0) {
-        var col ='green'
-      }
-      else if (scores[i].GPA < 3.0 && scores[i].GPA >= 2.0) {
-        var col ='yellow'
-      }
-      else {
-        var col ='red'
-      }
-      svg3.append("circle").attr("cx", scores[i].SATM).attr("cy", scores[i].SATV).attr("r", scores[i].ACT/2.5).attr("transform", "translate(0,1000), scale(1,-1)").style("fill", col).style("stroke", "black");
-    }
+          // Scatter circles
+          for(i=0; i< scores.length; i++) {
+            if (scores[i].GPA >= 3.0) {
+              var col ='green'
+            }
+            else if (scores[i].GPA < 3.0 && scores[i].GPA >= 2.0) {
+              var col ='yellow'
+            }
+            else {
+              var col ='red'
+            }
+            scatter3.append("circle")
+                .attr("cx", scores[i].SATM)
+                .attr("cy", scores[i].SATV)
+                .attr("r", scores[i].ACT/2.5)
+                .attr("transform", "translate(0,1000), scale(1,-1)")
+                .style("fill", col)
+                .style("stroke", "black");
+          }
 
-    var height = 1000;
-    var width = 1000;
-    var padding = 25;
-    var svg = d3.select("#svg3").attr("width", width).attr("height", height+2*padding)
-    var spacing = height / scores.length;
-    var min = 0, max = 900, yMin = 900, yMax = 0;
-    var xScale = d3.scaleLinear()
-            .domain([min, max])
-            .range([0, width-100])
-            .nice();
+          // Axes
+          var height = 1000;
+          var width = 1000;
+          var padding = 25;
+          var svg = d3.select("#svg3").attr("width", width).attr("height", height+2*padding)
+          var spacing = height / scores.length;
+          var min = 0, max = 900, yMin = 900, yMax = 0;
+          var xScale = d3.scaleLinear()
+                  .domain([min, max])
+                  .range([0, width-100])
+                  .nice();
 
-    var yScale = d3.scaleLinear()
-            .domain([yMin, yMax])
-            .range([0, height-100])
-            .nice();
+          var yScale = d3.scaleLinear()
+                  .domain([yMin, yMax])
+                  .range([0, height-100])
+                  .nice();
 
-    var color = d3.scaleLinear()
-            .domain([min, 0, max])
-            .range(["darkred", "lightgray", "steelblue"]);
+          var color = d3.scaleLinear()
+                  .domain([min, 0, max])
+                  .range(["darkred", "lightgray", "steelblue"]);
 
-    var xAxis = d3.axisBottom().scale(xScale).ticks(width / 80).tickSizeOuter(0);
+          var xAxis = d3.axisBottom()
+                        .scale(xScale)
+                        .ticks(width / 80)
+                        .tickSizeOuter(0);
 
-    var yAxis = d3.axisLeft().scale(yScale).ticks(height / 80).tickSizeOuter(0);
+          var yAxis = d3.axisLeft()
+                        .scale(yScale)
+                        .ticks(height / 80)
+                        .tickSizeOuter(0);
 
-    svg.append("g")
-            .classed("axis", true)
-            .attr("transform", "translate(" + (padding + 24.5) + "," + (height - 90) + ")")
-            .call(xAxis);
-    svg.append("g")
-            .classed("axis", true)
-            .attr("transform", "translate(" + (padding + 25) + "," + 9 + ")")
-            .call(yAxis);
+          svg.append("g")
+                  .classed("axis", true)
+                  .attr("transform", "translate(" + (padding + 24.5) + "," + (height - 90) + ")")
+                  .call(xAxis);
+          svg.append("g")
+                  .classed("axis", true)
+                  .attr("transform", "translate(" + (padding + 25) + "," + 9 + ")")
+                  .call(yAxis);
     </script>
   </div>
 </div>
