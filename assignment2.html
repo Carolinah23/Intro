@@ -49,7 +49,7 @@
 </div>
 
 <div id="D3Scatter2">
-    <h2>2-4. Color</h2>
+    <h2>2. Color</h2>
     <div>
         <h3>2a - Continuously interpolated (linear) color for the GPA values</h3>
         <svg id="scatter2a" width="1000" height="1000">
@@ -62,38 +62,209 @@
                 
             var minGPA=d3.min(scores, d =>d.GPA);
             var maxGPA=d3.max(scores, d =>d.GPA);
-
+            var axis=[];
+            for (i=1; i<10; i++){
+              axis[i-1]=i*100;
+            }
             var colorLinear=d3.scaleLinear().domain([minGPA, maxGPA]).range(["red", "green"]);
             
             var scatter=d3.select("#scatter2a");
+            //Scatter circles
             scatter.selectAll("circle")
                     .data(scores)
                     .enter()
                     .append("circle")
-                    .attr("cx", function(d, i){return scores[i].SATM;})
-                    .attr("cy", function(d, i){return 1000-(scores[i].SATV)+50;})
-                    .attr("r", function(d, i){return scores[i].ACT/2.5;})
-                    .style("fill", function(d){return colorLinear(d.GPA)}) // I was doing this line like for 3 hours!!!
+                    .attr("cx", d=>d.SATM)
+                    .attr("cy", d=> 1000-(d.SATV)+50)
+                    .attr("r", d=>d.ACT/2.5)
+                    .style("fill", d=>colorLinear(d.GPA))
                     .style("stroke", "#bcbcbc");
-
-            scatter.selectAll("text")
+            
+            //X-axis
+            scatter.selectAll(null)
+                    .data(axis)
                     .enter()
-                    .append("text")
-                    .attr("x", 500)
-                    .attr("y", 500)
+                    .append("text") 
+                    .attr("x", d=>d)
+                    .attr("y", 970) //Fix y
+                    .text(d=>d);
+            //Y-Axis
+            scatter.selectAll(null)
+                    .data(axis)
+                    .enter()
+                    .append("text") 
+                    .attr("x", 20) //Fix x
+                    .attr("y", d=>1000-d) 
+                    .text(d=>d);
         </script>
-
-
     </div>
-    
 
+    <div>
+      <h3>2b - Create a continuous color scale that uses three of the colors from the GnBu-5 for the GPA values</h3>
+      <svg id="scatter2b" width="1000" height="1000">
+        <rect x="50" y="50" width="900" height="900" style="fill:white; stroke:black; stroke-width:1px"/>
+        <text x="500" y="990">SATM</text>
+        <text x="30" y="35">SATV</text>
+        <text x="70" y="85">GPA - Point color (Ligh colors are smaller values) </text>
+     </svg>
+      <script>
+          var colorLinear3=d3.scaleLinear().domain([minGPA,(minGPA+maxGPA)/2 ,maxGPA]).range(["#f0f9e8", "#7bccc4", "#0868ac"]);
+          
+          var scatterb=d3.select("#scatter2b");
+          //Scatter circles
+          scatterb.selectAll("circle")
+                    .data(scores)
+                    .enter()
+                    .append("circle")
+                    .attr("cx", d=>d.SATM)
+                    .attr("cy", d=> 1000-(d.SATV)+50)
+                    .attr("r", d=>d.ACT/2.5)
+                    .style("fill", d=>colorLinear3(d.GPA)) // I was doing this line like for 3 hours!!!
+                    .style("stroke", "#bcbcbc");
+          
+          //X-axis
+          scatterb.selectAll(null)
+                  .data(axis)
+                  .enter()
+                  .append("text") 
+                  .attr("x", d=>d)
+                  .attr("y", 970) //Fix y
+                  .text(d=>d);
+          //Y-Axis
+          scatterb.selectAll(null)
+                  .data(axis)
+                  .enter()
+                  .append("text") 
+                  .attr("x", 20) //Fix x
+                  .attr("y", d=>1000-d) 
+                  .text(d=>d);
+      </script>
+    </div>
 
-    <svg id="2b" width="300" height="200">
-       <rect x="0" y="0" width="300" height="200" style="fill:white; stroke:black; stroke-width:1px"/>
-    </svg>
-    <svg id="2c" width="300" height="200">
-       <rect x="0" y="0" width="300" height="200" style="fill:white; stroke:black; stroke-width:1px"/>
-    </svg>
+    <div>
+      <h3>2c - Create a quantized color scale that uses all five colors of GnBu-5 for the GPA values</h3>
+      <svg id="scatter2c" width="1000" height="1000">
+        <rect x="50" y="50" width="900" height="900" style="fill:white; stroke:black; stroke-width:1px"/>
+        <text x="500" y="990">SATM</text>
+        <text x="30" y="35">SATV</text>
+        <text x="70" y="85">GPA - Point color (Ligh colors are smaller values, 5 bins) </text>
+     </svg>
+
+      <script>
+          var colorQuantize=d3.scaleQuantize().domain([minGPA, maxGPA]).range(["#f0f9e8", "#bae4bc", "#7bccc4", "#43a2ca", "#0868ac"]);
+          
+          var scatterc=d3.select("#scatter2c");
+          //Scatter circles
+          scatterc.selectAll("circle")
+                    .data(scores)
+                    .enter()
+                    .append("circle")
+                    .attr("cx", d=>d.SATM)
+                    .attr("cy", d=> 1000-(d.SATV)+50)
+                    .attr("r", d=>d.ACT/2.5)
+                    .style("fill", d=>colorQuantize(d.GPA)) // I was doing this line like for 3 hours!!!
+                    .style("stroke", "#bcbcbc");
+          
+          //X-axis
+          scatterc.selectAll(null)
+                  .data(axis)
+                  .enter()
+                  .append("text") 
+                  .attr("x", d=>d)
+                  .attr("y", 970) //Fix y
+                  .text(d=>d);
+          //Y-Axis
+          scatterc.selectAll(null)
+                  .data(axis)
+                  .enter()
+                  .append("text") 
+                  .attr("x", 20) //Fix x
+                  .attr("y", d=>1000-d) 
+                  .text(d=>d);
+      </script>
+    </div>
+</div>
+
+<div>
+  <h2>3. Color</h2>
+  <div>
+
+  </div>
+</div>
+
+<div>
+  <h2>4. Transitions</h2>
+  <div>
+    <h3>4a -  Create 3 buttons to change between the three color schemes for the dots above </h3>
+    <div id="d4a">
+      <svg id="DynamicScatters" width="1000" height="1000">
+          <rect x="50" y="50" width="900" height="900" style="fill:white; stroke:black; stroke-width:1px"/>
+          <text x="500" y="990">SATM</text>
+          <text x="30" y="35">SATV</text>
+      </svg>
+      <div></div>
+
+      <script>
+        var Basic=d3.select("#DynamicScatters");
+        Basic.selectAll(null)
+              .data(scores)
+              .enter()
+              .append("circle")
+              .attr("cx", d=>d.SATM)
+              .attr("cy", d=> 1000-(d.SATV)+50)
+              .attr("r", d=>d.ACT/2.5)
+              .style("stroke", "#bcbcbc");
+            
+        //X-axis
+        Basic.selectAll(null)
+              .data(axis)
+              .enter()
+              .append("text") 
+              .attr("x", d=>d)
+              .attr("y", 970) //Fix y
+              .text(d=>d);
+            //Y-Axis
+        Basic.selectAll(null)
+              .data(axis)
+              .enter()
+              .append("text") 
+              .attr("x", 20) //Fix x
+              .attr("y", d=>1000-d) 
+              .text(d=>d);
+
+        //Buttons
+        var GreenRedScheme=function(){
+          Basic.selectAll("circle").transition().duration(400).style("fill", d=>colorLinear(d.GPA));
+        }
+        var BlueLinear=function(){
+          Basic.selectAll("circle").transition().duration(400).style("fill", d=>colorLinear3(d.GPA));
+        }
+        var BlueQuantize=function(){
+          Basic.selectAll("circle").transition().duration(400).style("fill", d=>colorQuantize(d.GPA));
+        }
+
+        var button1=d3.select("#d4a").append("button");
+        button1.text("First scheme");
+        button1.on("click", GreenRedScheme);
+
+        var button2=d3.select("#d4a").append("button");
+        button2.text("Second scheme");
+        button2.on("click", BlueLinear);
+
+        var button3=d3.select("#d4a").append("button");
+        button3.text("Third scheme");
+        button3.on("click", BlueQuantize);
+      </script>
+    </div>
+  </div>
+
+  <div>
+    <h3>4b - Create a 4th button that changes the horizontal (X) axis to be the cumulative SAT score (SATM+SATV). </h3>
+    <div>
+      
+    </div>
+  </div>
+
 </div>
 
 </body>
