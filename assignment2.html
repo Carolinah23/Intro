@@ -226,10 +226,10 @@
             .domain([yMin, yMax])
             .range([0, height-100])
             .nice();
-
+    /*
     var color = d3.scaleLinear()
             .domain([min, 0, max])
-            .range(["darkred", "lightgray", "steelblue"]);
+            .range(["darkred", "lightgray", "steelblue"]);*/
 
     var xAxis = d3.axisBottom().scale(xScale).ticks(width / 80).tickSizeOuter(0);
 
@@ -277,7 +277,7 @@
               .attr("x", d=>d)
               .attr("y", 970) //Fix y
               .text(d=>d);
-            //Y-Axis
+        //Y-Axis
         Basic.selectAll(null)
               .data(axis)
               .enter()
@@ -314,7 +314,87 @@
 
   <div>
     <h3>4b - Create a 4th button that changes the horizontal (X) axis to be the cumulative SAT score (SATM+SATV). </h3>
-    <div>
+    <div id="d4b">
+      <svg id="DynamicScatters2" width="1000" height="1000">
+        <rect x="50" y="50" width="900" height="900" style="fill:white; stroke:black; stroke-width:1px"/>
+        <text x="500" y="990">SATM</text>
+        <text x="30" y="35">SATV</text>
+    </svg>
+    <div></div>
+      <script>
+        var ScatterScale=d3.select("#DynamicScatters2");
+        ScatterScale.selectAll(null)
+              .data(scores)
+              .enter()
+              .append("circle")
+              .attr("cx", d=>d.SATM)
+              .attr("cy", d=> 1000-(d.SATV)+50)
+              .attr("r", d=>d.ACT/2.5)
+              .style("stroke", "#bcbcbc");
+
+        //Axis
+        ScatterScale.append("g")
+              .classed("axis", true)
+              .attr("transform", "translate(" + 50 + "," + 950 + ")")
+              .attr("id", "xAxis")
+              .style("font-size", "1rem")
+              .call(xAxis);
+        ScatterScale.append("g")
+              .classed("axis", true)
+              .attr("transform", "translate("+50+","+50+")")
+              .attr("id", "yAxis")
+              .style("font-size", "1rem")
+              .call(yAxis);
+
+        var GreenRedScheme=function(){
+          ScatterScale.selectAll("circle").transition().duration(400).style("fill", d=>colorLinear(d.GPA));
+        }
+        var BlueLinear=function(){
+          ScatterScale.selectAll("circle").transition().duration(400).style("fill", d=>colorLinear3(d.GPA));
+        }
+        var BlueQuantize=function(){
+          ScatterScale.selectAll("circle").transition().duration(400).style("fill", d=>colorQuantize(d.GPA));
+        }
+
+        var CumulativeSAT=function(){
+        
+          var minSS=d3.min(scores, d=>(d.SATM+d.SATV));
+          console.log(minSS);
+          var maxSS=d3.max(scores, d=>(d.SATM+d.SATV));
+          console.log(maxSS);
+          var newXscale=d3.scaleLinear().domain([minSS-30, maxSS]).range([50, 900]);
+          var newXaxis=d3.axisBottom().scale(newXscale).ticks(width/80).tickSizeOuter(0);
+          ScatterScale.selectAll("circle")
+                .transition().duration(400)
+                .attr("cx", d=>newXscale(d.SATM+d.SATV))
+                .attr("cy", d=> 1000-d.SATV+50)
+                .attr("r", d=>d.ACT/2.5)
+                .style("stroke", "#bcbcbc");
+
+          ScatterScale.select("#xAxis")
+              .classed("axis", true)
+              .attr("transform", "translate("+50+","+950+")")
+              .style("font-size", "1rem")
+              .call(newXaxis);
+        }
+
+        var button1b=d3.select("#d4b").append("button");
+        button1b.text("First scheme");
+        button1b.on("click", GreenRedScheme);
+
+        var button2b=d3.select("#d4b").append("button");
+        button2b.text("Second scheme");
+        button2b.on("click", BlueLinear);
+
+        var button3b=d3.select("#d4b").append("button");
+        button3b.text("Third scheme");
+        button3b.on("click", BlueQuantize);
+
+        var button4=d3.select("#d4b").append("button");
+        button4.text("New horizontal axis");
+        button4.on("click", CumulativeSAT);
+
+      </script>
 
     </div>
   </div>
