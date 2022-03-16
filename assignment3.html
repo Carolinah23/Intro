@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Assignment 3</title>
+</head>
+<body>
+
+<h3>CMPS-3360 Assignment 3</h3>
+<span>Alan Braeley & Carolina Hurtado-Pulido</span>
+
+<br/>
+<hr/>
+<br/>
+
+<br/>
+
+<script src="scores.js" charset="utf-8"></script>
+<script src="https://d3js.org/d3.v4.js"></script>  
+
+
+<div id="D3_TwoScatters">	 
+    <h2>1 & 2 - Two scatterplots (SATM vs SATV) and (ACT vs GPA)</h2>
+    <svg id="TwoScatters" width="1000" height="500">
+      <rect id="ScatterSS" x="50" y="50" width="400" height="400" style="fill:white; stroke:black; stroke-width:1px"/>
+      <text x="225" y="490">SATM</text>
+      <text x="30" y="35">SATV</text>
+      <rect id="ScatterAG" x="550" y="50" width="400" height="400" style="fill:white; stroke:black; stroke-width:1px"/>
+      <text x="725" y="490">ACT</text>
+      <text x="530" y="35">GPA</text>
+    </svg>
+    <div></div>
+    <script>
+        var min=d3.min(scores, d =>d.SATV);
+        var max=d3.max(scores, d =>d.SATV);
+        console.log(min)
+        console.log(max)
+        //Scatter SATM vs SATV
+        var scatter1=d3.select("#TwoScatters")
+        scatter1.selectAll(null)
+            .data(scores)
+            .enter()
+            .append("circle")
+            .attr("cx", d=>d.SATM/2)
+            .attr("cy", d=>500-(d.SATV/2)+50)
+            .attr("r", "5")
+            .style("fill", "black")
+            .style("stroke", "#bcbcbc");
+
+    </script>
+
+</div>
+
+<div id="D3Scatter2">
+    <h2>2-4. Color</h2>
+    <svg id="2a" width="300" height="200">
+       <rect x="0" y="0" width="300" height="200" style="fill:white; stroke:black; stroke-width:1px"/>
+    </svg>
+    <svg id="2b" width="300" height="200">
+       <rect x="0" y="0" width="300" height="200" style="fill:white; stroke:black; stroke-width:1px"/>
+    </svg>
+    <svg id="2c" width="300" height="200">
+       <rect x="0" y="0" width="300" height="200" style="fill:white; stroke:black; stroke-width:1px"/>
+    </svg>
+</div>
+
+</body>
+</html>
