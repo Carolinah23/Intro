@@ -21,13 +21,15 @@
 
 <div id="D3_TwoScatters">	 
     <h2>1 & 2 - Two scatterplots (SATM vs SATV) and (ACT vs GPA)</h2>
-    <svg id="TwoScatters" width="1000" height="500">
+    <svg id="SATM_SATV" width="500" height="500">
       <rect x="50" y="50" width="400" height="400" style="fill:white; stroke:black; stroke-width:1px"/>
       <text x="225" y="490">SATM</text>
       <text x="30" y="35">SATV</text>
-      <rect x="550" y="50" width="400" height="400" style="fill:white; stroke:black; stroke-width:1px"/>
-      <text x="725" y="490">ACT</text>
-      <text x="530" y="35">GPA</text>
+    </svg>
+    <svg id="ACT_GPA" width="500" height="500">
+        <rect x="50" y="50" width="400" height="400" style="fill:white; stroke:black; stroke-width:1px"/>
+        <text x="225" y="490">ACT</text>
+        <text x="30" y="35">GPA</text>
     </svg>
     <div></div>
     <script>
@@ -37,31 +39,98 @@
         console.log(max)
         idsCircle=[]
         for(i=1; i<scores.length; i++){
-            idsCircle.append(i);
+            idsCircle[i]=i;
         }
         //Scatter SATM vs SATV
-        var scatter1=d3.select("#TwoScatters")
+        var scatter1=d3.select("#SATM_SATV")
         scatter1.selectAll(null)
             .data(scores)
             .enter()
             .append("circle")
-            .attr("id", d=>d.idsCircle)
+            .attr("id", function(d,i){return idsCircle[i];})
             .attr("cx", d=>d.SATM/2)
             .attr("cy", d=>500-(d.SATV/2)+50)
             .attr("r", "5")
             .style("fill", "black")
             .style("stroke", "#bcbcbc");
 
-        scatter1.selectAll(null)
+        var scatter2=d3.select("#ACT_GPA")
+        scatter2.selectAll(null)
             .data(scores)
             .enter()
             .append("circle")
-            .attr("id", d=>1)
-            .attr("cx", d=>550+(d.ACT*10))
+            .attr("id", function(d,i){return idsCircle[i];})
+            .attr("cx", d=>d.ACT*10)
             .attr("cy", d=>d.GPA*100)
             .attr("r", "5")
             .style("fill", "black")
             .style("stroke", "#bcbcbc");
+
+        //Axis SATM vs SATV
+        var xScale=d3.scaleLinear()
+            .domain([0, 900]) //Min and max for SATM 
+            .range([0, 400])
+            .nice();
+
+        var yScale=d3.scaleLinear()
+            .domain([900, 0])
+            .range([0, 400])
+            .nice();
+        
+        var xAxis=d3.axisBottom()
+            .scale(xScale)
+            .ticks(10)
+            .tickSizeOuter(0);
+        var yAxis=d3.axisLeft()
+            .scale(yScale)
+            .ticks(10)
+            .tickSizeOuter(0);
+        
+        scatter1.append("g")
+              .classed("axis", true)
+              .attr("transform", "translate(" + 50 + "," + 450 + ")")
+              .attr("id", "xAxis")
+              .style("font-size", "1rem")
+              .call(xAxis);
+        scatter1.append("g")
+              .classed("axis", true)
+              .attr("transform", "translate("+50+","+50+")")
+              .attr("id", "yAxis")
+              .style("font-size", "1rem")
+              .call(yAxis);
+
+        //Axis ACT-GPA
+        var xScale2=d3.scaleLinear()
+            .domain([0, 35]) //Min and max for GPA 
+            .range([0, 400])
+            .nice();
+
+        var yScale2=d3.scaleLinear()
+            .domain([4, 0])
+            .range([0, 400])
+            .nice();
+        
+        var xAxis2=d3.axisBottom()
+            .scale(xScale2)
+            .ticks(10)
+            .tickSizeOuter(0);
+        var yAxis2=d3.axisLeft()
+            .scale(yScale2)
+            .ticks(10)
+            .tickSizeOuter(0);
+        
+        scatter2.append("g")
+              .classed("axis", true)
+              .attr("transform", "translate(" + 50 + "," + 450 + ")")
+              .attr("id", "xAxis")
+              .style("font-size", "1rem")
+              .call(xAxis2);
+        scatter2.append("g")
+              .classed("axis", true)
+              .attr("transform", "translate("+50+","+50+")")
+              .attr("id", "yAxis")
+              .style("font-size", "1rem")
+              .call(yAxis2);
 
     </script>
 

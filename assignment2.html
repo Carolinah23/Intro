@@ -241,7 +241,10 @@
             .domain([min, 0, max])
             .range(["darkred", "lightgray", "steelblue"]);*/
 
-    var xAxis = d3.axisBottom().scale(xScale).ticks(width / 80).tickSizeOuter(0);
+    var xAxis = d3.axisBottom()
+      .scale(xScale)  
+      .ticks(width / 80).
+      tickSizeOuter(0);
 
     var yAxis = d3.axisLeft().scale(yScale).ticks(height / 80).tickSizeOuter(0);
 
