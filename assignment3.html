@@ -140,21 +140,19 @@
     </svg>
     <div></div>
     <script>
-        var min=d3.min(scores, d =>d.SATV);
-        var max=d3.max(scores, d =>d.SATV);
-        console.log(min)
-        console.log(max)
         idsCircle=[]
         for(i=0; i<scores.length; i++){
             idsCircle[i]=i.toString();
         }
-
+        
+        //Functions to turn on and off selections
+        //clear selection - all points black
         SelectionState=false;
         function clearSelection(){
             d3.selectAll(".Circles").style("fill", "black").attr("r", "5");
             SelectionState=false;
         };
-
+        //start selection - allows to have multiple points selected
         function startSelection(){
             if (!SelectionState) {
                 d3.selectAll(".Circles").style("fill", "gray");
@@ -182,7 +180,8 @@
             });
 
         scatterSSL.on("click", clearSelection);
-
+        
+        //Scatter ACT vs GPA
         var scatterAGL=d3.select("#ACT_GPA_Link")
         scatterAGL.selectAll(null)
             .data(scores)
