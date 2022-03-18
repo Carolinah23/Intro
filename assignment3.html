@@ -291,7 +291,7 @@
                 .attr("id", "xAxis")
                 .style("font-size", "1rem")
                 .call(xAxis2);
-            scatter2_3a.append("g")
+            scatter2_3b.append("g")
                 .classed("axis", true)
                 .attr("transform", "translate("+50+","+50+")")
                 .attr("id", "yAxis")
@@ -315,28 +315,56 @@
           </svg>
           <div></div>
           <script>
+
+            //Functions to turn on and off selections
+            
+            //clear selection - all points black
+            SelectionState=false;
+            
+            function clearSelection3c(){
+                d3.selectAll(".Circles3c").style("fill", "black").attr("r", "5");
+                SelectionState=false;
+            };
+            //start selection - allows to have multiple points selected
+            function startSelection3c(){
+                if (!SelectionState) {
+                    d3.selectAll(".Circles3c").style("fill", "gray");
+                    SelectionState=true};
+            };
               //Scatter SATM vs SATV
             var scatter1_3c=d3.select("#SATM_SATV_3c")
             scatter1_3c.selectAll(null)
                 .data(scores)
                 .enter()
                 .append("circle")
+                .attr("class", "Circles3c")
                 .attr("cx", d=>d.SATM/2)
                 .attr("cy", d=>500-(d.SATV/2))
                 .attr("r", "5")
                 .style("fill", "black")
-                .style("stroke", "#bcbcbc");
+                .style("stroke", "#bcbcbc")
+                .on("click", function(d,i) {
+                    d3.event.stopPropagation();
+                    startSelection3c(SelectionState);
+                    d3.select(this).transition().duration(300).style("fill", "red");});
+            scatter1_3c.on("click", clearSelection3c);
 
             var scatter2_3c=d3.select("#ACT_GPA_3c")
             scatter2_3c.selectAll(null)
                 .data(scores)
                 .enter()
                 .append("circle")
+                .attr("class", "Circles3c")
                 .attr("cx", d=>50+(d.ACT*10))
                 .attr("cy", d=>500-(d.GPA*100))
                 .attr("r", "5")
                 .style("fill", "black")
-                .style("stroke", "#bcbcbc");
+                .style("stroke", "#bcbcbc")
+                .on("click", function(d,i) {
+                    d3.event.stopPropagation();
+                    startSelection3c(SelectionState);
+                    d3.select(this).transition().duration(300).style("fill", "red");});
+            scatter2_3c.on("click", clearSelection3c);
 
             //Axis SATM vs SATV
             scatter1_3c.append("g")
@@ -352,14 +380,13 @@
                 .style("font-size", "1rem")
                 .call(yAxis);
             //Axis ACT-GPA
-            
-            scatter2_3a.append("g")
+            scatter2_3c.append("g")
                 .classed("axis", true)
                 .attr("transform", "translate(" + 50 + "," + 450 + ")")
                 .attr("id", "xAxis")
                 .style("font-size", "1rem")
                 .call(xAxis2);
-            scatter2_3a.append("g")
+            scatter2_3c.append("g")
                 .classed("axis", true)
                 .attr("transform", "translate("+50+","+50+")")
                 .attr("id", "yAxis")
@@ -384,6 +411,21 @@
     </svg>
     <div></div>
     <script>
+        //Functions to turn on and off selections
+            
+        //clear selection - all points black
+        SelectionState=false;
+            
+        function clearSelection4(){
+            d3.selectAll(".Circles4").style("fill", "black").attr("r", "5");
+            SelectionState=false;
+        };
+        //start selection - allows to have multiple points selected
+        function startSelection4(){
+            if (!SelectionState) {
+                    d3.selectAll(".Circles4").style("fill", "gray");
+                    SelectionState=true};
+        };
 
         //Scatter SATM vs SATV
         var scatterSSL=d3.select("#SATM_SATV_Link")
@@ -391,7 +433,7 @@
             .data(scores)
             .enter()
             .append("circle")
-            .attr("class", "Circles")
+            .attr("class", "Circles4")
             .attr("id", function(d,i){return "A"+idsCircle[i];})
             .attr("cx", d=>d.SATM/2)
             .attr("cy", d=>500-(d.SATV/2))
@@ -400,12 +442,12 @@
             .style("stroke", "#bcbcbc")
             .on("click", function(d,i) {
                 d3.event.stopPropagation();
-                startSelection(SelectionState);
+                startSelection4(SelectionState);
                 d3.select(this).transition().duration(300).style("fill", "red");
                 d3.select("#B"+i).transition().duration(300).attr("r", "10").style("fill", "black");
             });
 
-        scatterSSL.on("click", clearSelection);
+        scatterSSL.on("click", clearSelection4);
         
         //Scatter ACT vs GPA
         var scatterAGL=d3.select("#ACT_GPA_Link")
@@ -413,7 +455,7 @@
             .data(scores)
             .enter()
             .append("circle")
-            .attr("class", "Circles")
+            .attr("class", "Circles4")
             .attr("id", function(d,i){return "B"+idsCircle[i];})
             .attr("cx", d=>50+(d.ACT*10))
             .attr("cy", d=>500-(d.GPA*100))
@@ -422,11 +464,11 @@
             .style("stroke", "#bcbcbc")
             .on("click", function(d,i) {
                 d3.event.stopPropagation();
-                startSelection(SelectionState);
+                startSelection4(SelectionState);
                 d3.select(this).transition().duration(300).style("fill", "red");
                 d3.select("#A"+i).transition().duration(300).attr("r", "10").style("fill", "black");
             });
-        scatterAGL.on("click", clearSelection);
+        scatterAGL.on("click", clearSelection4);
 
         //Axis ACT vs GPA
         var xScaleLink=d3.scaleLinear()
