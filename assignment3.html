@@ -247,6 +247,26 @@
           </svg>
           <div></div>
           <script>
+
+            //Function that decides if a point is selected or not 
+            function PointInBrush(coord, cx, cy){
+                x0=coord[0][0];
+                y0=coord[0][1];
+                x1=coord[1][0];
+                y1=coord[1][1];
+                IsBrush=false;
+                if(x0<=cx && cx<=x1){
+                    if(y0<=cy && cy<=y1){
+                        IsBrush=True;
+                    }
+                }
+                return IsBrush;
+            }
+
+            function Brushing(){
+                area=d3.event.selection
+                
+            }
             //Scatter SATM vs SATV
             var scatter1_3b=d3.select("#SATM_SATV_3b")
             scatter1_3b.selectAll(null)
@@ -298,6 +318,9 @@
                 .style("font-size", "1rem")
                 .call(yAxis2);
 
+            //Brush
+            scatter1_3b.call(d3.brush().extent([[0,0], [400,400]]));
+            scatter2_3b.call(d3.brush().extent([[0,0], [400,400]]));
               
           </script>
     </div>
