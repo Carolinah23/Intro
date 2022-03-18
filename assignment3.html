@@ -33,23 +33,14 @@
     </svg>
     <div></div>
     <script>
-        var min=d3.min(scores, d =>d.SATV);
-        var max=d3.max(scores, d =>d.SATV);
-        console.log(min)
-        console.log(max)
-        idsCircle=[]
-        for(i=1; i<scores.length; i++){
-            idsCircle[i]=i;
-        }
         //Scatter SATM vs SATV
         var scatter1=d3.select("#SATM_SATV")
         scatter1.selectAll(null)
             .data(scores)
             .enter()
             .append("circle")
-            .attr("id", function(d,i){return idsCircle[i];})
             .attr("cx", d=>d.SATM/2)
-            .attr("cy", d=>500-(d.SATV/2)+50)
+            .attr("cy", d=>500-(d.SATV/2))
             .attr("r", "5")
             .style("fill", "black")
             .style("stroke", "#bcbcbc");
@@ -59,9 +50,8 @@
             .data(scores)
             .enter()
             .append("circle")
-            .attr("id", function(d,i){return idsCircle[i];})
-            .attr("cx", d=>d.ACT*10)
-            .attr("cy", d=>d.GPA*100)
+            .attr("cx", d=>50+(d.ACT*10))
+            .attr("cy", d=>500-(d.GPA*100))
             .attr("r", "5")
             .style("fill", "black")
             .style("stroke", "#bcbcbc");
@@ -101,12 +91,12 @@
 
         //Axis ACT-GPA
         var xScale2=d3.scaleLinear()
-            .domain([0, 35]) //Min and max for GPA 
+            .domain([0, 40]) //Min and max for GPA 
             .range([0, 400])
             .nice();
 
         var yScale2=d3.scaleLinear()
-            .domain([4, 0])
+            .domain([4.5, 0])
             .range([0, 400])
             .nice();
         
@@ -136,17 +126,124 @@
 
 </div>
 
-<div id="D3Scatter2">
-    <h2>2-4. Color</h2>
-    <svg id="2a" width="300" height="200">
-       <rect x="0" y="0" width="300" height="200" style="fill:white; stroke:black; stroke-width:1px"/>
+<div id="D3Scatter4">
+    <h2>4 - Linked Scatters</h2>
+    <svg id="SATM_SATV_Link" width="500" height="500">
+      <rect x="50" y="50" width="400" height="400" style="fill:white; stroke:black; stroke-width:1px"/>
+      <text x="225" y="490">SATM</text>
+      <text x="30" y="35">SATV</text>
     </svg>
-    <svg id="2b" width="300" height="200">
-       <rect x="0" y="0" width="300" height="200" style="fill:white; stroke:black; stroke-width:1px"/>
+    <svg id="ACT_GPA_Link" width="500" height="500">
+        <rect x="50" y="50" width="400" height="400" style="fill:white; stroke:black; stroke-width:1px"/>
+        <text x="225" y="490">ACT</text>
+        <text x="30" y="35">GPA</text>
     </svg>
-    <svg id="2c" width="300" height="200">
-       <rect x="0" y="0" width="300" height="200" style="fill:white; stroke:black; stroke-width:1px"/>
-    </svg>
+    <div></div>
+    <script>
+        var min=d3.min(scores, d =>d.SATV);
+        var max=d3.max(scores, d =>d.SATV);
+        console.log(min)
+        console.log(max)
+        idsCircle=[]
+        for(i=0; i<scores.length; i++){
+            idsCircle[i]=i.toString();
+        }
+        //Scatter SATM vs SATV
+        var scatterSSL=d3.select("#SATM_SATV_Link")
+        scatterSSL.selectAll(null)
+            .data(scores)
+            .enter()
+            .append("circle")
+            .attr("id", function(d,i){return idsCircle[i];})
+            .attr("cx", d=>d.SATM/2)
+            .attr("cy", d=>500-(d.SATV/2))
+            .attr("r", "5")
+            .style("fill", "black")
+            .style("stroke", "#bcbcbc")
+            .on("click", function(d) {d3.select(this).transition().duration(300).style("fill", "red")});
+
+        var scatterAGL=d3.select("#ACT_GPA_Link")
+        scatterAGL.selectAll(null)
+            .data(scores)
+            .enter()
+            .append("circle")
+            .attr("id", function(d,i){return idsCircle[i];})
+            .attr("cx", d=>50+(d.ACT*10))
+            .attr("cy", d=>500-(d.GPA*100))
+            .attr("r", "5")
+            .style("fill", "black")
+            .style("stroke", "#bcbcbc");
+
+        //Axis ACT vs GPA
+        var xScaleLink=d3.scaleLinear()
+            .domain([0, 900]) //Min and max for SATM 
+            .range([0, 400])
+            .nice();
+
+        var yScaleLink=d3.scaleLinear()
+            .domain([900, 0])
+            .range([0, 400])
+            .nice();
+        
+        var xAxisLink=d3.axisBottom()
+            .scale(xScaleLink)
+            .ticks(10)
+            .tickSizeOuter(0);
+        var yAxisLink=d3.axisLeft()
+            .scale(yScaleLink)
+            .ticks(10)
+            .tickSizeOuter(0);
+        
+        scatterSSL.append("g")
+              .classed("axis", true)
+              .attr("transform", "translate(" + 50 + "," + 450 + ")")
+              .attr("id", "xAxis")
+              .style("font-size", "1rem")
+              .call(xAxisLink);
+        scatterSSL.append("g")
+              .classed("axis", true)
+              .attr("transform", "translate("+50+","+50+")")
+              .attr("id", "yAxis")
+              .style("font-size", "1rem")
+              .call(yAxisLink);
+
+        //Axis ACT-GPA
+        var xScaleLink2=d3.scaleLinear()
+            .domain([0, 40]) //Min and max for GPA 
+            .range([0, 400])
+            .nice();
+
+        var yScaleLink2=d3.scaleLinear()
+            .domain([4.5, 0])
+            .range([0, 400])
+            .nice();
+        
+        var xAxisLink2=d3.axisBottom()
+            .scale(xScaleLink2)
+            .ticks(10)
+            .tickSizeOuter(0);
+        var yAxisLink2=d3.axisLeft()
+            .scale(yScaleLink2)
+            .ticks(10)
+            .tickSizeOuter(0);
+        
+        scatterAGL.append("g")
+              .classed("axis", true)
+              .attr("transform", "translate(" + 50 + "," + 450 + ")")
+              .attr("id", "xAxis")
+              .style("font-size", "1rem")
+              .call(xAxisLink2);
+        scatterAGL.append("g")
+              .classed("axis", true)
+              .attr("transform", "translate("+50+","+50+")")
+              .attr("id", "yAxis")
+              .style("font-size", "1rem")
+              .call(yAxisLink2);
+        
+
+    </script>
+
+</div>
 </div>
 
 </body>
