@@ -133,17 +133,65 @@
             <rect x="50" y="50" width="400" height="400" style="fill:white; stroke:black; stroke-width:1px"/>
             <text x="225" y="490">SATM</text>
             <text x="30" y="35">SATV</text>
-          </svg>
-          <svg id="ACT_GPA_3a" width="500" height="500">
-              <rect x="50" y="50" width="400" height="400" style="fill:white; stroke:black; stroke-width:1px"/>
-              <text x="225" y="490">ACT</text>
-              <text x="30" y="35">GPA</text>
-          </svg>
+        </svg>
+        <svg id="ACT_GPA_3a" width="500" height="500">
+            <rect x="50" y="50" width="400" height="400" style="fill:white; stroke:black; stroke-width:1px"/>
+            <text x="225" y="490">ACT</text>
+            <text x="30" y="35">GPA</text>
+        </svg>
           <div></div>
-          <script>
+        <script>
+            //Scatter SATM vs SATV
+            var scatter1_3a=d3.select("#SATM_SATV_3a")
+            scatter1_3a.selectAll(null)
+                .data(scores)
+                .enter()
+                .append("circle")
+                .attr("cx", d=>d.SATM/2)
+                .attr("cy", d=>500-(d.SATV/2))
+                .attr("r", "5")
+                .style("fill", "black")
+                .style("stroke", "#bcbcbc");
 
+            var scatter2_3a=d3.select("#ACT_GPA_3a")
+            scatter2_3a.selectAll(null)
+                .data(scores)
+                .enter()
+                .append("circle")
+                .attr("cx", d=>50+(d.ACT*10))
+                .attr("cy", d=>500-(d.GPA*100))
+                .attr("r", "5")
+                .style("fill", "black")
+                .style("stroke", "#bcbcbc");
 
-          </script>
+            //Axis SATM vs SATV
+            scatter1_3a.append("g")
+                .classed("axis", true)
+                .attr("transform", "translate(" + 50 + "," + 450 + ")")
+                .attr("id", "xAxis")
+                .style("font-size", "1rem")
+                .call(xAxis);
+            scatter1_3a.append("g")
+                .classed("axis", true)
+                .attr("transform", "translate("+50+","+50+")")
+                .attr("id", "yAxis")
+                .style("font-size", "1rem")
+                .call(yAxis);
+            //Axis ACT-GPA
+            
+            scatter2_3a.append("g")
+                .classed("axis", true)
+                .attr("transform", "translate(" + 50 + "," + 450 + ")")
+                .attr("id", "xAxis")
+                .style("font-size", "1rem")
+                .call(xAxis2);
+            scatter2_3a.append("g")
+                .classed("axis", true)
+                .attr("transform", "translate("+50+","+50+")")
+                .attr("id", "yAxis")
+                .style("font-size", "1rem")
+                .call(yAxis2);
+        </script>
     </div>
     <div>
         <h3>3b - Rectangular brush</h3>
@@ -159,6 +207,56 @@
           </svg>
           <div></div>
           <script>
+            //Scatter SATM vs SATV
+            var scatter1_3b=d3.select("#SATM_SATV_3b")
+            scatter1_3b.selectAll(null)
+                .data(scores)
+                .enter()
+                .append("circle")
+                .attr("cx", d=>d.SATM/2)
+                .attr("cy", d=>500-(d.SATV/2))
+                .attr("r", "5")
+                .style("fill", "black")
+                .style("stroke", "#bcbcbc");
+
+            var scatter2_3b=d3.select("#ACT_GPA_3b")
+            scatter2_3b.selectAll(null)
+                .data(scores)
+                .enter()
+                .append("circle")
+                .attr("cx", d=>50+(d.ACT*10))
+                .attr("cy", d=>500-(d.GPA*100))
+                .attr("r", "5")
+                .style("fill", "black")
+                .style("stroke", "#bcbcbc");
+
+            //Axis SATM vs SATV
+            scatter1_3b.append("g")
+                .classed("axis", true)
+                .attr("transform", "translate(" + 50 + "," + 450 + ")")
+                .attr("id", "xAxis")
+                .style("font-size", "1rem")
+                .call(xAxis);
+            scatter1_3b.append("g")
+                .classed("axis", true)
+                .attr("transform", "translate("+50+","+50+")")
+                .attr("id", "yAxis")
+                .style("font-size", "1rem")
+                .call(yAxis);
+            //Axis ACT-GPA
+            
+            scatter2_3b.append("g")
+                .classed("axis", true)
+                .attr("transform", "translate(" + 50 + "," + 450 + ")")
+                .attr("id", "xAxis")
+                .style("font-size", "1rem")
+                .call(xAxis2);
+            scatter2_3a.append("g")
+                .classed("axis", true)
+                .attr("transform", "translate("+50+","+50+")")
+                .attr("id", "yAxis")
+                .style("font-size", "1rem")
+                .call(yAxis2);
 
               
           </script>
@@ -177,6 +275,56 @@
           </svg>
           <div></div>
           <script>
+              //Scatter SATM vs SATV
+            var scatter1_3c=d3.select("#SATM_SATV_3c")
+            scatter1_3c.selectAll(null)
+                .data(scores)
+                .enter()
+                .append("circle")
+                .attr("cx", d=>d.SATM/2)
+                .attr("cy", d=>500-(d.SATV/2))
+                .attr("r", "5")
+                .style("fill", "black")
+                .style("stroke", "#bcbcbc");
+
+            var scatter2_3c=d3.select("#ACT_GPA_3c")
+            scatter2_3c.selectAll(null)
+                .data(scores)
+                .enter()
+                .append("circle")
+                .attr("cx", d=>50+(d.ACT*10))
+                .attr("cy", d=>500-(d.GPA*100))
+                .attr("r", "5")
+                .style("fill", "black")
+                .style("stroke", "#bcbcbc");
+
+            //Axis SATM vs SATV
+            scatter1_3c.append("g")
+                .classed("axis", true)
+                .attr("transform", "translate(" + 50 + "," + 450 + ")")
+                .attr("id", "xAxis")
+                .style("font-size", "1rem")
+                .call(xAxis);
+            scatter1_3c.append("g")
+                .classed("axis", true)
+                .attr("transform", "translate("+50+","+50+")")
+                .attr("id", "yAxis")
+                .style("font-size", "1rem")
+                .call(yAxis);
+            //Axis ACT-GPA
+            
+            scatter2_3a.append("g")
+                .classed("axis", true)
+                .attr("transform", "translate(" + 50 + "," + 450 + ")")
+                .attr("id", "xAxis")
+                .style("font-size", "1rem")
+                .call(xAxis2);
+            scatter2_3a.append("g")
+                .classed("axis", true)
+                .attr("transform", "translate("+50+","+50+")")
+                .attr("id", "yAxis")
+                .style("font-size", "1rem")
+                .call(yAxis2);
 
               
           </script>
