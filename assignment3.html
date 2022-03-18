@@ -148,31 +148,60 @@
         for(i=0; i<scores.length; i++){
             idsCircle[i]=i.toString();
         }
+
+        SelectionState=false;
+        function clearSelection(){
+            d3.selectAll(".Circles").style("fill", "black").attr("r", "5");
+            SelectionState=false;
+        };
+
+        function startSelection(){
+            if (!SelectionState) {
+                d3.selectAll(".Circles").style("fill", "gray");
+                SelectionState=true};
+        };
+
         //Scatter SATM vs SATV
         var scatterSSL=d3.select("#SATM_SATV_Link")
         scatterSSL.selectAll(null)
             .data(scores)
             .enter()
             .append("circle")
-            .attr("id", function(d,i){return idsCircle[i];})
+            .attr("class", "Circles")
+            .attr("id", function(d,i){return "A"+idsCircle[i];})
             .attr("cx", d=>d.SATM/2)
             .attr("cy", d=>500-(d.SATV/2))
             .attr("r", "5")
             .style("fill", "black")
             .style("stroke", "#bcbcbc")
-            .on("click", function(d) {d3.select(this).transition().duration(300).style("fill", "red")});
+            .on("click", function(d,i) {
+                d3.event.stopPropagation();
+                startSelection(SelectionState);
+                d3.select(this).transition().duration(300).style("fill", "red");
+                d3.select("#B"+i).transition().duration(300).attr("r", "10").style("fill", "black");
+            });
+
+        scatterSSL.on("click", clearSelection);
 
         var scatterAGL=d3.select("#ACT_GPA_Link")
         scatterAGL.selectAll(null)
             .data(scores)
             .enter()
             .append("circle")
-            .attr("id", function(d,i){return idsCircle[i];})
+            .attr("class", "Circles")
+            .attr("id", function(d,i){return "B"+idsCircle[i];})
             .attr("cx", d=>50+(d.ACT*10))
             .attr("cy", d=>500-(d.GPA*100))
             .attr("r", "5")
             .style("fill", "black")
-            .style("stroke", "#bcbcbc");
+            .style("stroke", "#bcbcbc")
+            .on("click", function(d,i) {
+                d3.event.stopPropagation();
+                startSelection(SelectionState);
+                d3.select(this).transition().duration(300).style("fill", "red");
+                d3.select("#A"+i).transition().duration(300).attr("r", "10").style("fill", "black");
+            });
+        scatterAGL.on("click", clearSelection);
 
         //Axis ACT vs GPA
         var xScaleLink=d3.scaleLinear()
