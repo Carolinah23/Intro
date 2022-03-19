@@ -141,26 +141,25 @@
         </svg>
           <div></div>
         <script>
-            // Ids for points
-            idsCircle=[]
+             // Ids for points
+             idsCircle=[]
             for(i=0; i<scores.length; i++){
                 idsCircle[i]=i.toString();
             }
 
             //Functions to turn on and off selections
-            
+
             //clear selection - all points black
-            SelectionState=false;
-            
+            SelectionState3a=false;
+
             function clearSelection(){
-                d3.selectAll(".Circles").style("fill", "black").attr("r", "5");
-                SelectionState=false;
+                d3.selectAll(".Circles3a").style("fill", "black").attr("r", "5");
+                SelectionState3a=false;
             };
             //start selection - allows to have multiple points selected
             function startSelection(){
-                if (!SelectionState) {
-                    d3.selectAll(".Circles").style("fill", "gray");
-                    SelectionState=true};
+                if (!SelectionState3a) {
+                    SelectionState3a=true};
             };
 
 
@@ -170,40 +169,48 @@
                 .data(scores)
                 .enter()
                 .append("circle")
-                .attr("class", "Circles")
+                .attr("class", "Circles3a")
                 .attr("cx", d=>d.SATM/2)
                 .attr("cy", d=>500-(d.SATV/2))
                 .attr("r", "5")
                 .style("fill", "black")
                 .style("stroke", "#bcbcbc")
                 .on("click", function(d,i) {
+                    clearSelection(SelectionState3a);
                     d3.event.stopPropagation();
-                    startSelection(SelectionState);
+                    startSelection(SelectionState3a);
+                    scatter1_3a.selectAll(".Circles3a").style("fill", "gray");
+                    d3.selectAll(".textInfo").remove();
                     d3.select("#SATM_SATV_3a").append("text").attr("class", "textInfo").attr("x", "70").attr("y", "75").text("SATV: "+d.SATV+ " SAMT:"+d.SATM);
                     d3.select(this).transition().duration(300).style("fill", "red");});
             scatter1_3a.on("click", function(){
-                clearSelection(SelectionState);
-                d3.selectAll(".textInfo").remove();});
+              clearSelection(SelectionState3a);
+              d3.selectAll(".textInfo").remove();
+                });
 
             var scatter2_3a=d3.select("#ACT_GPA_3a")
             scatter2_3a.selectAll(null)
                 .data(scores)
                 .enter()
                 .append("circle")
-                .attr("class", "Circles")
+                .attr("class", "Circles3a")
                 .attr("cx", d=>50+(d.ACT*10))
                 .attr("cy", d=>500-(d.GPA*100))
                 .attr("r", "5")
                 .style("fill", "black")
                 .style("stroke", "#bcbcbc")
                 .on("click", function(d,i) {
+                    clearSelection(SelectionState3a);
                     d3.event.stopPropagation();
-                    startSelection(SelectionState);
+                    startSelection(SelectionState3a);
+                    scatter2_3a.selectAll(".Circles3a").style("fill", "gray");
+                    d3.selectAll(".textInfo").remove()
                     d3.select("#ACT_GPA_3a").append("text").attr("class", "textInfo").attr("x", "70").attr("y", "75").text("ACT: "+d.ACT+ " GPA:"+d.GPA);
                     d3.select(this).transition().duration(300).style("fill", "red");});
             scatter2_3a.on("click", function(){
-                clearSelection(SelectionState);
-                d3.selectAll(".textInfo").remove();});
+                clearSelection(SelectionState3a);
+                d3.selectAll(".textInfo").remove();
+                });
 
             //Axis SATM vs SATV
             scatter1_3a.append("g")
@@ -248,31 +255,37 @@
           <div></div>
           <script>
 
-            //Function that decides if a point is selected or not 
-            function PointInBrush(coord, cx, cy){
-                x0=coord[0][0];
-                y0=coord[0][1];
-                x1=coord[1][0];
-                y1=coord[1][1];
+            //Function that decides if a point is in a brush region 
+            function isBrush(Brush_coord, cx, cy){
+                x0=Brush_coord[0][0];
+                y0=Brush_coord[0][1];
+                x1=Brush_coord[1][0];
+                y1=Brush_coord[1][1];
                 IsBrush=false;
                 if(x0<=cx && cx<=x1){
                     if(y0<=cy && cy<=y1){
-                        IsBrush=True;
+                        IsBrush=true;
                     }
                 }
                 return IsBrush;
             }
 
-            function Brushing(){
-                area=d3.event.selection
-                
-            }
+            //clear selection - all points black
+            SelectionState3b=false;
+            
+            function clearSelection3b(){
+                d3.selectAll(".Circles3b_SS").style("fill", "black").attr("r", "5");
+                d3.selectAll(".Circles3b_AG").style("fill", "black").attr("r", "5");
+                SelectionState3b=false;
+            };
+
             //Scatter SATM vs SATV
             var scatter1_3b=d3.select("#SATM_SATV_3b")
             scatter1_3b.selectAll(null)
                 .data(scores)
                 .enter()
                 .append("circle")
+                .attr("class", "Circles3b_SS")
                 .attr("cx", d=>d.SATM/2)
                 .attr("cy", d=>500-(d.SATV/2))
                 .attr("r", "5")
@@ -284,6 +297,7 @@
                 .data(scores)
                 .enter()
                 .append("circle")
+                .attr("class", "Circles3b_AG")
                 .attr("cx", d=>50+(d.ACT*10))
                 .attr("cy", d=>500-(d.GPA*100))
                 .attr("r", "5")
@@ -303,8 +317,8 @@
                 .attr("id", "yAxis")
                 .style("font-size", "1rem")
                 .call(yAxis);
-            //Axis ACT-GPA
             
+            //Axis ACT-GPA
             scatter2_3b.append("g")
                 .classed("axis", true)
                 .attr("transform", "translate(" + 50 + "," + 450 + ")")
@@ -319,8 +333,42 @@
                 .call(yAxis2);
 
             //Brush
-            scatter1_3b.call(d3.brush().extent([[0,0], [400,400]]));
-            scatter2_3b.call(d3.brush().extent([[0,0], [400,400]]));
+            scatter1_3b.call(
+                d3.brush()
+                .extent([[50,50], [450,450]])
+                .on("start brush", function(){
+                    extend=d3.event.selection;
+                    console.log(extend);
+                    d3.selectAll(".Circles3b_SS")
+                        .style("fill",function(d){
+                            if(isBrush(extend,d.SATM/2,500-(d.SATV/2))){
+                                return "red";
+                            } 
+                            else{
+                                return "gray";
+                            }
+                        })
+                }))
+
+            scatter1_3b.on("click", clearSelection3b);
+
+            scatter2_3b.call(
+                d3.brush()
+                .extent([[50,50], [450,450]])
+                .on("start brush", function(){
+                    extend=d3.event.selection;
+                    console.log(extend);
+                    d3.selectAll(".Circles3b_AG")
+                        .style("fill",function(d){
+                            if(isBrush(extend,50+(d.ACT*10), 500-(d.GPA*100))){
+                                return "red";
+                            } 
+                            else{
+                                return "gray";
+                            }
+                        })
+                }))
+                scatter2_3b.on("click", clearSelection3b);
               
           </script>
     </div>
@@ -342,17 +390,17 @@
             //Functions to turn on and off selections
             
             //clear selection - all points black
-            SelectionState=false;
+            SelectionState3c=false;
             
             function clearSelection3c(){
                 d3.selectAll(".Circles3c").style("fill", "black").attr("r", "5");
-                SelectionState=false;
+                SelectionState3c=false;
             };
             //start selection - allows to have multiple points selected
             function startSelection3c(){
-                if (!SelectionState) {
+                if (!SelectionState3c) {
                     d3.selectAll(".Circles3c").style("fill", "gray");
-                    SelectionState=true};
+                    SelectionState3c=true};
             };
               //Scatter SATM vs SATV
             var scatter1_3c=d3.select("#SATM_SATV_3c")
@@ -368,7 +416,7 @@
                 .style("stroke", "#bcbcbc")
                 .on("click", function(d,i) {
                     d3.event.stopPropagation();
-                    startSelection3c(SelectionState);
+                    startSelection3c(SelectionState3c);
                     d3.select(this).transition().duration(300).style("fill", "red");});
             scatter1_3c.on("click", clearSelection3c);
 
@@ -385,7 +433,7 @@
                 .style("stroke", "#bcbcbc")
                 .on("click", function(d,i) {
                     d3.event.stopPropagation();
-                    startSelection3c(SelectionState);
+                    startSelection3c(SelectionState3c);
                     d3.select(this).transition().duration(300).style("fill", "red");});
             scatter2_3c.on("click", clearSelection3c);
 
@@ -415,8 +463,6 @@
                 .attr("id", "yAxis")
                 .style("font-size", "1rem")
                 .call(yAxis2);
-
-              
           </script>
     </div>
 </div>
