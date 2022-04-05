@@ -27,6 +27,7 @@ imageReader = vtk.vtkStructuredPointsReader()
 imageReader.SetFileName("./data/hydrogen.vtk")
 imageReader.Update()
 
+
 #Print dimensions and range of the 3d image
 dims = imageReader.GetOutput().GetDimensions()
 print("Dimensions of image: " + str(dims[0]) + " x "
