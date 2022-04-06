@@ -4,8 +4,9 @@ from __future__ import print_function
 import vtk
 
 #Interactor style that handles mouse and keyboard events
-class MyInteractorStyle(vtk.vtkInteractorStyleTrackballCamera):
 
+class MyInteractorStyle(vtk.vtkInteractorStyleTrackballCamera):
+    isovalue=0.5
     def __init__(self,parent=None):
         self.parent = vtk.vtkRenderWindowInteractor()
         if(parent is not None):
@@ -16,10 +17,13 @@ class MyInteractorStyle(vtk.vtkInteractorStyleTrackballCamera):
       key = self.parent.GetKeySym()
       if(key == "Up"):
         #TODO: have this increase the isovalue
-        print("Up")
+        MyInteractorStyle.isovalue = MyInteractorStyle.isovalue +0.05
+        print("Up ", MyInteractorStyle.isovalue)
       if(key == "Down"):
         #TODO: have this decrease the isovalue
-        print("Down")
+        MyInteractorStyle.isovalue = MyInteractorStyle.isovalue-0.05
+        print("Down ", MyInteractorStyle.isovalue)
+      
 
 
 #Loader for our structured dataset
@@ -51,14 +55,31 @@ outlineActor.GetProperty().SetLineWidth(2.0);
 #
 #Insert isosurfacing, scalebar, and text code here
 #
-#
+##############################
+### QUESTION 1 -ISOSURFACE ###
+##############################
+#Object
+hydrogen=vtk.vtkMarchingCubes()
+hydrogen.SetInputConnection(imageReader.GetOutputPort())
+hydrogen.SetValue(0, MyInteractorStyle.isovalue) #Could this be hydrogen.SetValue(0, 0.1)?
+hydrogen.ComputeNormalsOn()
+hydrogen.Update()
+#Mapper
+hydrogenMapper=vtk.vtkPolyDataMapper()
+hydrogenMapper.SetInputConnection(hydrogen.GetOutputPort())
+#Actor
+hydrogenActor=vtk.vtkActor()
+hydrogenActor.SetMapper(hydrogenMapper)
+
+##############################
 
 #A renderer that renders our geometry into the render window
 renderer = vtk.vtkRenderer()
-renderer.SetBackground(0.1, 0.1, 0.2)
+renderer.SetBackground(0.1, 0.1, 0.3)
 
 #Add actors to our renderer
 renderer.AddActor(outlineActor)
+renderer.AddActor(hydrogenActor)
 #TODO: You'll probably need to add additional actors to the scene
 
 #The render window
