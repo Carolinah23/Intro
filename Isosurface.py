@@ -38,6 +38,7 @@ print("Range of image: " + str(range[0]) + " to " +  str(range[1]))
 #create an outline that shows the bounds of our dataset
 outline = vtk.vtkOutlineFilter();
 outline.SetInputConnection(imageReader.GetOutputPort());
+
 #mapper to push the outline geometry to the graphics library
 outlineMapper = vtk.vtkPolyDataMapper();
 outlineMapper.SetInputConnection(outline.GetOutputPort());
