@@ -17,11 +17,15 @@ class MyInteractorStyle(vtk.vtkInteractorStyleTrackballCamera):
       key = self.parent.GetKeySym()
       if(key == "Up"):
         #TODO: have this increase the isovalue
-        MyInteractorStyle.isovalue = MyInteractorStyle.isovalue +0.05
+        MyInteractorStyle.isovalue = MyInteractorStyle.isovalue +0.05 #Change isovalue
+        hydrogen.SetValue(0,MyInteractorStyle.isovalue) #Add isovalue to the object
+        self.parent.Render()#Update display
         print("Up ", MyInteractorStyle.isovalue)
       if(key == "Down"):
         #TODO: have this decrease the isovalue
         MyInteractorStyle.isovalue = MyInteractorStyle.isovalue-0.05
+        hydrogen.SetValue(0,MyInteractorStyle.isovalue)
+        self.parent.Render()
         print("Down ", MyInteractorStyle.isovalue)
       
 
@@ -61,9 +65,8 @@ outlineActor.GetProperty().SetLineWidth(2.0);
 #Object
 hydrogen=vtk.vtkMarchingCubes()
 hydrogen.SetInputConnection(imageReader.GetOutputPort())
-hydrogen.SetValue(0, MyInteractorStyle.isovalue) #Could this be hydrogen.SetValue(0, 0.1)?
+hydrogen.SetValue(0, 0.5) #Could this be hydrogen.SetValue(0, 0.1)?
 hydrogen.ComputeNormalsOn()
-hydrogen.Update()
 #Mapper
 hydrogenMapper=vtk.vtkPolyDataMapper()
 hydrogenMapper.SetInputConnection(hydrogen.GetOutputPort())
@@ -91,6 +94,7 @@ renwin.AddRenderer(renderer)
 interactor = vtk.vtkRenderWindowInteractor()
 interactor.SetInteractorStyle(MyInteractorStyle(parent = interactor))
 interactor.SetRenderWindow(renwin)
+
 
 interactor.Initialize()
 interactor.Start()
