@@ -12,7 +12,9 @@ class MyInteractorStyle(vtk.vtkInteractorStyleTrackballCamera):
         if(parent is not None):
           self.parent = parent
         self.AddObserver("KeyPressEvent",self.keyPress)
-    
+    ##############################
+    ### QUESTION 2 - ISOVALUES ###
+    ##############################
     def keyPress(self,obj,event):
       key = self.parent.GetKeySym()
       if(key == "Up"):
@@ -62,7 +64,7 @@ outlineActor.GetProperty().SetLineWidth(2.0);
 ##############################
 ### QUESTION 1 -ISOSURFACE ###
 ##############################
-#Object
+#Source
 hydrogen=vtk.vtkMarchingCubes()
 hydrogen.SetInputConnection(imageReader.GetOutputPort())
 hydrogen.SetValue(0, 0.5) #Could this be hydrogen.SetValue(0, 0.1)?
@@ -73,6 +75,12 @@ hydrogenMapper.SetInputConnection(hydrogen.GetOutputPort())
 #Actor
 hydrogenActor=vtk.vtkActor()
 hydrogenActor.SetMapper(hydrogenMapper)
+##############################
+
+##############################
+#### QUESTION 3 - TEXT #######
+##############################
+
 
 ##############################
 
@@ -82,9 +90,8 @@ renderer.SetBackground(0.1, 0.1, 0.3)
 
 #Add actors to our renderer
 renderer.AddActor(outlineActor)
-renderer.AddActor(hydrogenActor)
 #TODO: You'll probably need to add additional actors to the scene
-
+renderer.AddActor(hydrogenActor)
 #The render window
 renwin = vtk.vtkRenderWindow()
 renwin.SetSize( 512, 512);
