@@ -41,10 +41,11 @@ opacityTransferFunction.AddPoint(200, 0.8)
 
 # Transfer mapping scalar values to colors
 colorTransferFunction = vtk.vtkColorTransferFunction()
-colorTransferFunction.AddRGBPoint(0.0, 2.0, 0.0, 250)
-colorTransferFunction.AddRGBPoint(20, 5.0, 0.0, 0.0)
-colorTransferFunction.AddRGBPoint(100, 250, 1.0, 0.0)
-colorTransferFunction.AddRGBPoint(200, 0.0, 250, 1.0)
+colorTransferFunction.AddRGBPoint(0, 2.0, 0.0, 0.0)
+colorTransferFunction.AddRGBPoint(64, 5.0, 0.0, 0.0)
+colorTransferFunction.AddRGBPoint(0, 0.0, 128.0, 1.0)
+colorTransferFunction.AddRGBPoint(192, 0.0, 1.0, 0.0)
+colorTransferFunction.AddRGBPoint(255, 0.0, 0.2, 1.0)
 
 
 volumeProperty = vtk.vtkVolumeProperty()
@@ -86,9 +87,8 @@ renwin.Render()'''
 
 
 rt = vtk.vtkRTAnalyticSource()
-rt.SetWholeExtent(-3,3,-3,3,-3,3)
+rt.SetWholeExtent(-10,10,-10,10,-10,10)
 rt.Update()
-
 
 plane = vtk.vtkPlane()
 clipper = vtk.vtkCutter()
@@ -107,8 +107,7 @@ selectActor = vtk.vtkActor()
 selectActor.SetMapper(selectMapper)
 selectActor.VisibilityOn()
 selectActor.SetScale(10, 10, 10)
-iren = vtk.vtkRenderWindowInteractor()
-iren.SetRenderWindow(renwin)
+
 
 #A renderer that renders our geometry into the render window
 renderer = vtk.vtkRenderer()
@@ -136,10 +135,10 @@ planeRep.SetNormal(1,1,1)
 planeRep.GetPlane(plane)
 
 planeWidget = vtk.vtkImplicitPlaneWidget2()
-planeWidget.SetInteractor(iren)
+#planeWidget.SetInteractor(iren)
 planeWidget.SetRepresentation(planeRep)
 planeWidget.SetEnabled(1)
-planeWidget.AddObserver("InteractionEvent", myCallback)
+#planeWidget.AddObserver("InteractionEvent", myCallback)
 
 renderer.AddActor(selectActor)
 
@@ -149,6 +148,8 @@ renderer.AddActor(selectActor)
 interactor = vtk.vtkRenderWindowInteractor()
 interactor.SetInteractorStyle(MyInteractorStyle(parent = interactor))
 interactor.SetRenderWindow(renwin)
+#iren = vtk.vtkRenderWindowInteractor()
+#iren.SetRenderWindow(renwin)
 
 
 interactor.Initialize()
